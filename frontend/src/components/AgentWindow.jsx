@@ -193,7 +193,7 @@ function AgentWindow() {
             </button>
         </header>
 
-        <div className="w-full h-full flex items-stretch pt-16"> 
+        <div className={`w-full h-full flex items-stretch pt-16`}> 
           <ChatArea
             chat={chat}
             status={status}
@@ -204,9 +204,9 @@ function AgentWindow() {
           />
 
           <div
-            className={`transition-all duration-300 ease-in-out border-l border-gray-700 bg-gray-800 ${
-              pdfURL && showpdf ? "w-[50%] opacity-100" : "w-0 opacity-0 overflow-hidden border-none"
-            } flex h-full relative`}
+            className={`transition-all duration-300 ease-in-out border-l border-gray-700 bg-gray-800 ${status == "file uploaded..."? "mb-32": "mb-20"} ${
+              pdfURL && showpdf ? "w-[50%] opacity-100" : "hidden overflow-hidden border-none"
+            } flex relative`}
           >
             <iframe
               key={refreshKey}

@@ -16,7 +16,11 @@ async function connectDB() {
 const parsePdfByPage = async (pdfBuffer) => {
   // Uint8Array conversion
   const uint8Array = new Uint8Array(pdfBuffer);
-  const loadingTask = pdfjsLib.getDocument(uint8Array);
+  const loadingTask = pdfjsLib.getDocument({
+    data: uint8Array,
+    disableFontFace: true,
+    verbosity: 0
+});
   const pdfDocument = await loadingTask.promise;
   
   const pagesData = [];
