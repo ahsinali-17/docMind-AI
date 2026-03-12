@@ -52,13 +52,29 @@ function chunkText(text, chunkSize, overlap = 200) {
 }
 
 const embedText = async (text) => {
+  const embeddingModels = ["gemini-embedding-001", "gemini-embedding-2-preview"];
+  const outputDimensionality = 768;
+
   try {
-    const response = await ai.models.embedContent({
-      model: "text-embedding-004",
-      contents: { parts: [{ text: text }] },
-    });
-    const vector = response.embeddings?.[0]?.values;
-    return vector;
+    for (const model of embeddingModels) {
+      try {
+        const response = await ai.models.embedContent({
+          model,
+          contents: { parts: [{ text }] },
+          config: { outputDimensionality },
+        });
+
+        const vector = response.embeddings?.[0]?.values;
+        if (vector?.length) {
+          return vector;
+        }
+      } catch (modelError) {
+        // Try the next model if this one is unavailable for the current API key.
+        console.error(`Embedding model failed (${model}):`, modelError?.status || modelError?.message || modelError);
+      }
+    }
+
+    return null;
   } catch (error) {
     console.error("Embedding Error:", error);
     return null;
